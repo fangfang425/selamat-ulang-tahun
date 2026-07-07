@@ -17,18 +17,18 @@
             min-height: 100vh;
             display: flex;
             justify-content: center;
-            align-items: center;
-            /* overflow: hidden; <-- HAPUS ATAU GANTI BARIS INI JADI SEPERTI DI BAWAH */
-            overflow-y: auto; /* Mengizinkan scroll vertikal jika konten luber */
+            align-items: flex-start; /* Mengubah dari center ke flex-start agar halaman bisa di-scroll ke bawah secara alami */
+            overflow-y: auto; /* Mengizinkan seluruh layar HP untuk di-scroll */
             color: #334155;
             padding: 20px;
             transition: background 0.3s ease; 
+            -webkit-overflow-scrolling: touch; /* Membuat scroll di iPhone/Android terasa mulus/smooth */
         }
 
         .box {
             background: rgba(255, 255, 255, 0.9);
             backdrop-filter: blur(10px);
-            padding: 40px 30px;
+            padding: 35px 25px;
             border-radius: 20px;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
             text-align: center;
@@ -37,11 +37,11 @@
             border: 2px solid #7dd3fc;
             z-index: 10;
             transition: all 0.5s ease;
-            /* Tambahkan dua baris ini agar pas di layar HP yang pendek */
-            max-height: 90vh; /* Batasi tinggi kotak maksimal 90% dari layar HP */
-            overflow-y: auto; /* Aktifkan scroll di dalam kotak putihnya saja jika kuponnya panjang */
+            margin-top: auto; /* Kombinasi margin top & bottom auto */
+            margin-bottom: auto; /* Membuat kotak tetap di tengah kalau layar longgar, tapi bisa memanjang kalau layar sempit */
+            height: auto; /* Membiarkan kotak memanjang sesuai isi kupon */
         }
-
+        
         .screen {
             display: none;
             opacity: 0;
