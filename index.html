@@ -333,10 +333,12 @@
             }, 400); // Waktu jeda gelap (400 milidetik)
         }
 
-        // --- KLAIM KUPON VIA WHATSAPP ---
+        // --- KLAIM KUPON LANGSUNG KE WA KAMU ---
         function claimCoupon(namaKupon) {
+            const nomorWA = "6285654574898"; 
+            
             const pesan = `Halo! Aku mau klaim "${namaKupon}" dong dari website ulang tahun yang kamu bikin 😆`;
-            const urlWA = `https://wa.me/?text=${encodeURIComponent(pesan)}`;
+            const urlWA = `https://wa.me/${nomorWA}?text=${encodeURIComponent(pesan)}`;
             window.open(urlWA, '_blank');
         }
 
