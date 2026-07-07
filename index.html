@@ -336,6 +336,9 @@
         // --- KLAIM KUPON LANGSUNG KE WA KAMU ---
         function claimCoupon(namaKupon) {
             const nomorWA = "6285654574898"; 
+
+        // Kode di bawah ini otomatis menghapus spasi, strip, atau tanda + jika tidak sengaja ketulis
+            nomorWA = nomorWA.replace(/[^0-9]/g, '');
             
             const pesan = `Halo! Aku mau klaim "${namaKupon}" dong dari website ulang tahun yang kamu bikin 😆`;
             const urlWA = `https://wa.me/${nomorWA}?text=${encodeURIComponent(pesan)}`;
