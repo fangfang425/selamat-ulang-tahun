@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Selamat Ulang Tahun!</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background: linear-gradient(135deg, #e0f2fe, #bae6fd);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            color: #334155;
+        }
+
+        /* Container Utama */
+        .box {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            text-align: center;
+            max-width: 450px;
+            width: 90%;
+            border: 2px solid #7dd3fc;
+            z-index: 10;
+            transition: all 0.5s ease;
+        }
+
+        /* Semua halaman disembunyikan dulu lewat CSS, diatur lewat JS nanti */
+        .screen {
+            display: none;
+            opacity: 0;
+            transform: scale(0.9);
+            transition: all 0.5s ease;
+        }
+
+        /* Halaman pertama langsung aktif */
+        #screen-1 {
+            display: block;
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .emoji {
+            font-size: 60px;
+            animation: bounce 2s infinite;
+            display: inline-block;
+            filter: drop-shadow(0px 5px 5px rgba(0,0,0,0.1));
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+        }
+
+        h1 {
+            color: #0284c7;
+            margin: 20px 0 10px;
+            font-size: 2.1rem;
+        }
+
+        p {
+            color: #475569;
+            font-size: 1.1rem;
+            line-height: 1.6;
+            margin-bottom: 25px;
+        }
+
+        .input-group {
+            margin: 25px 0;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 12px 20px;
+            font-size: 1rem;
+            border: 2px solid #bae6fd;
+            border-radius: 50px;
+            outline: none;
+            text-align: center;
+            color: #334155;
+        }
+
+        input[type="text"]:focus {
+            border-color: #38bdf8;
+            box-shadow: 0 0 10px rgba(56, 189, 248, 0.2);
+        }
+
+        .btn {
+            background: #0ea5e9;
+            color: white;
+            border: none;
+            padding: 12px 28px;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(14, 165, 233, 0.3);
+            width: 100%;
+        }
+
+        .btn:hover {
+            background: #0284c7;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(14, 165, 233, 0.4);
+        }
+
+        canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        /* Tombol Audio di pojok atas */
+        .audio-control {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.8);
+            border: 1px solid #7dd3fc;
+            padding: 10px;
+            border-radius: 50%;
+            cursor: pointer;
+            z-index: 100;
+            font-size: 20px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+        }
+    </style>
+</head>
+<body>
+
+    <canvas id="confetti"></canvas>
+
+    <!-- Tombol Kontrol Musik -->
+    <button class="audio-control" onclick="toggleMusic()" id="audioBtn" style="display: none;">🔈</button>
+
+    <!-- Elemen Audio Musik (Ganti URL src dengan link musikmu jika punya) -->
+    <audio id="bgMusic" loop src= "lagu.mp4" ></audio>
+
+    <div class="box">
+        
+        <!-- HALAMAN 1: INPUT NAMA -->
+        <div id="screen-1" class="screen">
+            <div class="emoji">🎁</div>
+            <h1>Ada Kejutan Nih!</h1>
+            <p>Sebelum masuk, tolong ketik nama kamu dulu ya:</p>
+            <div class="input-group">
+                <input type="text" id="nameInput" placeholder="Ketik nama di sini..." autocomplete="off">
+            </div>
+            <button class="btn" onclick="nextScreen(1, 2); startMusic();">Masuk ✨</button>
+        </div>
+
+        <!-- HALAMAN 2: PESAN PEMBUKA -->
+        <div id="screen-2" class="screen">
+            <div class="emoji">⏳</div>
+            <h1>Halo, <span class="user-name"></span>!</h1>
+            <p>Hari ini bukan sekadar hari biasa. Ada momen berharga yang sedang berputar di kalender hidupmu...</p>
+            <button class="btn" onclick="nextScreen(2, 3)">Lanjut ➡️</button>
+        </div>
+
+        <!-- HALAMAN 3: PESAN KEDUA -->
+        <div id="screen-3" class="screen">
+            <div class="emoji">🌟</div>
+            <h1>Waktu Terus Berjalan...</h1>
+            <p>Terima kasih ya sudah bertahan sejauh ini, sudah berjuang, dan selalu menjadi versi terbaik dari dirimu.</p>
+            <button class="btn" onclick="nextScreen(3, 4)">Buka Kado Utama 🎁</button>
+        </div>
+
+        <!-- HALAMAN 4: UCAPAN UTAMA + KONFETI -->
+        <div id="screen-4" class="screen">
+            <div class="emoji">🎂</div>
+            <h1>Happy Birthday!</h1>
+            <p>Selamat ulang tahun, <strong class="user-name" style="color: #0ea5e9;"></strong>! Semoga di usia yang baru ini kamu selalu diberikan kesehatan, kelancaran rezeki, dan kebahagiaan yang melimpah! ✨</p>
+            <button class="btn" onclick="tambahKonfeti()">Ledakkan Konfeti Lagi! 🎉</button>
+        </div>
+
+    </div>
+
+    <script>
+        let userName = "Kamu";
+        const music = document.getElementById('bgMusic');
+        const audioBtn = document.getElementById('audioBtn');
+
+        // Fungsi berpindah halaman cerdas
+        function nextScreen(current, next) {
+            // Ambil input nama khusus di halaman pertama
+            if (current === 1) {
+                const input = document.getElementById('nameInput').value.trim();
+                if (input) userName = input;
+                
+                // Tempel nama ke semua class 'user-name' di halaman lain
+                document.querySelectorAll('.user-name').forEach(el => el.textContent = userName);
+            }
+
+            const currentEl = document.getElementById(`screen-${current}`);
+            const nextEl = document.getElementById(`screen-${next}`);
+
+            // Efek transisi keluar
+            currentEl.style.opacity = '0';
+            currentEl.style.transform = 'scale(0.9)';
+
+            setTimeout(() => {
+                currentEl.style.display = 'none';
+
+                // Efek transisi masuk halaman baru
+                nextEl.style.display = 'block';
+                setTimeout(() => {
+                    nextEl.style.opacity = '1';
+                    nextEl.style.transform = 'scale(1)';
+                    
+                    // Kalau sudah sampai halaman terakhir, nyalakan hujan konfeti otomatis
+                    if (next === 4) {
+                        initConfetti();
+                        animateConfetti();
+                    }
+                }, 50);
+            }, 500);
+        }
+
+        // --- SISTEM SUARA (AUDIO) ---
+        // Catatan: Browser zaman sekarang melarang musik berputar otomatis (autoplay) sebelum user klik sesuatu. 
+        // Jadi kita memicunya saat user klik tombol "Masuk" pertama kali.
+        function startMusic() {
+            music.volume = 0.4; // Atur volume (0.0 sampai 1.0)
+            music.play().catch(err => console.log("Menunggu interaksi user untuk memutar audio."));
+            audioBtn.style.display = 'block'; // Tampilkan tombol speaker di pojok
+            audioBtn.textContent = '🔊';
+        }
+
+        function toggleMusic() {
+            if (music.paused) {
+                music.play();
+                audioBtn.textContent = '🔊';
+            } else {
+                music.pause();
+                audioBtn.textContent = '🔈';
+            }
+        }
+
+        // --- SISTEM KONFETI (HTML5 CANVAS) ---
+        const canvas = document.getElementById('confetti');
+        const ctx = canvas.getContext('2d');
+        let pieces = [];
+        const colors = ['#0ea5e9', '#38bdf8', '#34d399', '#fcd34d', '#fb923c', '#a78bfa', '#ef4444'];
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        class ConfettiParticle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height - canvas.height;
+                this.rotation = Math.random() * 360;
+                this.rotationSpeed = Math.random() * 10 - 5;
+                this.color = colors[Math.floor(Math.random() * colors.length)];
+                this.size = Math.random() * 8 + 6;
+                this.speedY = Math.random() * 3 + 2;
+                this.speedX = Math.random() * 2 - 1;
+            }
+            update() {
+                this.y += this.speedY;
+                this.x += this.speedX;
+                this.rotation += this.rotationSpeed;
+                if (this.y > canvas.height) {
+                    this.y = -20;
+                    this.x = Math.random() * canvas.width;
+                }
+            }
+            draw() {
+                ctx.save();
+                ctx.translate(this.x, this.y);
+                ctx.rotate(this.rotation * Math.PI / 180);
+                ctx.fillStyle = this.color;
+                ctx.fillRect(-this.size / 2, -this.size / 2, this.size, this.size);
+                ctx.restore();
+            }
+        }
+
+        function initConfetti() {
+            for (let i = 0; i < 150; i++) {
+                pieces.push(new ConfettiParticle());
+            }
+        }
+
+        function animateConfetti() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            pieces.forEach(piece => {
+                piece.update();
+                piece.draw();
+            });
+            requestAnimationFrame(animateConfetti);
+        }
+
+        function tambahKonfeti() {
+            for (let i = 0; i < 50; i++) {
+                let p = new ConfettiParticle();
+                p.y = Math.random() * (canvas.height / 2);
+                pieces.push(p);
+            }
+            if (pieces.length > 400) pieces.splice(0, 50);
+        }
+    </script>
+</body>
+</html>
