@@ -18,10 +18,11 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            overflow: hidden;
+            /* overflow: hidden; <-- HAPUS ATAU GANTI BARIS INI JADI SEPERTI DI BAWAH */
+            overflow-y: auto; /* Mengizinkan scroll vertikal jika konten luber */
             color: #334155;
             padding: 20px;
-            transition: background 0.3s ease; /* Transisi dipercepat sedikit agar efek kedipnya responsif */
+            transition: background 0.3s ease; 
         }
 
         .box {
@@ -36,6 +37,9 @@
             border: 2px solid #7dd3fc;
             z-index: 10;
             transition: all 0.5s ease;
+            /* Tambahkan dua baris ini agar pas di layar HP yang pendek */
+            max-height: 90vh; /* Batasi tinggi kotak maksimal 90% dari layar HP */
+            overflow-y: auto; /* Aktifkan scroll di dalam kotak putihnya saja jika kuponnya panjang */
         }
 
         .screen {
