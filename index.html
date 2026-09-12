@@ -334,6 +334,11 @@
 
         // --- KLAIM KUPON LANGSUNG KE WA KAMU ---
         function claimCoupon(namaKupon) {
+            // 1. Hentikan musik secara otomatis saat dialihkan ke WA
+            if (music) {
+                music.pause();
+                audioBtn.textContent = '🔈';
+            }
             // 1. Deklarasikan nomor dasar
             const rawNomorWA = "6285654574898";       
             // 2. Bersihkan karakter non-angka dan simpan di variabel baru (cleanNomorWA)
