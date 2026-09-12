@@ -335,13 +335,15 @@
 
         // --- KLAIM KUPON LANGSUNG KE WA KAMU ---
         function claimCoupon(namaKupon) {
-            const nomorWA = "6285654574898"; 
-
-        // Kode di bawah ini otomatis menghapus spasi, strip, atau tanda + jika tidak sengaja ketulis
-            nomorWA = nomorWA.replace(/[^0-9]/g, '');
-            
-            const pesan = `Halo! Aku mau klaim "${namaKupon}" dong dari website ulang tahun yang kamu bikin 😆`;
-            const urlWA = `https://wa.me/${nomorWA}?text=${encodeURIComponent(pesan)}`;
+            // 1. Deklarasikan nomor dasar
+            const rawNomorWA = "6285654574898";       
+            // 2. Bersihkan karakter non-angka dan simpan di variabel baru (cleanNomorWA)
+            const cleanNomorWA = rawNomorWA.replace(/[^0-9]/g, '');            
+            // 3. Ambil nama penerima dari input halaman 1 (Opsional, agar pesan lebih personal)
+            const pesan = `Halo! Aku ${userName}, mau klaim "${namaKupon}" dong dari website ulang tahun yang kamu bikin 😆`;            
+            // 4. Buat URL WhatsApp
+            const urlWA = `https://wa.me/${cleanNomorWA}?text=${encodeURIComponent(pesan)}`;            
+            // 5. Buka tab/aplikasi WhatsApp baru
             window.open(urlWA, '_blank');
         }
 
